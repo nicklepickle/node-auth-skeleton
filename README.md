@@ -66,25 +66,35 @@ Before installing the dependencies a number of additions need to be made to supp
 
 Once these dependencies have been declared, install them using npm in a shell. 
 
-``$nick npm install``
+```
+$nick npm install
+```
 
 Some information about the installed packages will be displayed followed by "found 0 vulnerabilities". If a vulnerability is found, run a security audit of the installed packages. You can also run an audit anyways just to feel safe. The audit may include instructions on how to resolve any reported vulnerabilities.
 
-``$nick npm audit``
+```
+$nick npm audit
+```
 
 ## Configuring the Application
 
 The configuration for this application will be stored in the config.js file at the root of the project. This file contains all of the vital security settings for the application along with database credentials. It should be treated carefully and never checked into a public repository. With git this can be done by updating its index.
 
-``nick$ git update-index --assume-unchanged config.js``
+```
+nick$ git update-index --assume-unchanged config.js
+```
 
 The database section of config.js contains connection settings described in the [sequalized manual](https://sequelize.org/v5/manual/getting-started.html).  The session section contains key which is the name of the session cookie, secret used to salt the payload and secure which should always be set to true in a production environment. The password section contains the following important settings.
 
-``saltrounds: 10``
+```
+saltrounds: 10
+```
 
 The saltrounds setting is the amount of time required to calculate the hash. The higher the cost factor, the more hashing rounds are done.  A cost factor of 10 means that the calculation is done 2^10 times. The more rounds of calculation you need to get the final hash, the more calculation time is necessary. This is no problem for calculating a single hash for a login, but it is a huge problem when you brute-force millions of password combinations.
 
-``maxattempts: 10``
+```
+maxattempts: 10
+```
 
 The maxattempts setting is the number of failed password attempts a user can try before they are locked out of their account.  With this feature a brute-force attack to gain access to a single account is also a huge problem.  The down side is that some valid users will be locked out of their account and will require a method of resetting their credentials.  This is usually done by sending an expiring, one time use token to them via email or text message that allows them access to their password page.  This however is outside of the scope of an application skeleton.  To turn this feature off set maxattempts to zero.
 
@@ -99,11 +109,29 @@ Minlength and complexity set the requirements for a valid password. Minlength as
 
 The session model contains the express-session configuration and setup. The user model contains the ORM mapping for user data which can be extended as needed as well as the methods for handling password policies and authentication.  The important method to note is the passport strategy defined in authStrategy. Passport uses what are termed strategies to authenticate requests. Strategies range from verifying a username and password to delegated authentication using OAuth. The local policy implemented in this project uses a username and password validated against a bcrypt hash stored in Postgres. The user and session models are exported by index.js which also sets up the sequalized connection to Postgres with the values in the config file. They can then be used as follows.
 
-``const Models = require('./models');``
+```
+const Models = require('./models');
+```
 
 *Any database that integrates with express-session and sequalized could be used in this project. Compatible session stores are listed on the [express-session document](https://www.npmjs.com/package/express-session#compatible-session-stores).   Compatible sequalized databases are listed on the [sequalized dialects page](https://sequelize.org/v5/manual/dialects.html). For alternative passport polices browse the [passport policy packages](http://www.passportjs.org/packages/).*
 
-In app.js the new models and packages are used by the app.
+Finally in app.js the new models and packages are required and used by the app.
+```
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
+const passport = require('passport');
+const helmet = require('helmet');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const config = require('./config');
+const app = express();
+
+const Models = require('./models');
+```
+...
 
 ```
 app.use(Models.sessions);
@@ -122,7 +150,7 @@ passport.deserializeUser(function(user, done) {
 passport.use(Models.users.authStrategy);
 ```
 
-##Users Views and Routes##
+## Users Views and Routes##
 
 This project uses handlebar views for users to create an account, log in, reset their password and update their profile. Handlebars was chosen because it is lightweight and uses standard HTML5 as opposed to a engine specific syntax.  However, these views are simple web forms and could be adapted to any view engine with minimal effort.  Express generator suppports ejs, hjs, jade, pug, twig, and vash as alternatives.  It is also possible to generate an application with --no-view and use any front end framework.  In this project client side validation is done with jquery.
 
