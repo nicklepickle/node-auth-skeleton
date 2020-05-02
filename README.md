@@ -150,7 +150,7 @@ passport.deserializeUser(function(user, done) {
 passport.use(Models.users.authStrategy);
 ```
 
-## Users Views and Routes##
+## Users Views and Routes
 
 This project uses handlebar views for users to create an account, log in, reset their password and update their profile. Handlebars was chosen because it is lightweight and uses standard HTML5 as opposed to a engine specific syntax.  However, these views are simple web forms and could be adapted to any view engine with minimal effort.  Express generator suppports ejs, hjs, jade, pug, twig, and vash as alternatives.  It is also possible to generate an application with --no-view and use any front end framework.  In this project client side validation is done with jquery.
 
