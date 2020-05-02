@@ -1,4 +1,4 @@
-# Adding Authentication to a Express Generator Skeleton
+# Adding Authentication to an Express Generator Skeleton
 
 ## Introduction
 
