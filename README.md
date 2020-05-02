@@ -103,8 +103,6 @@ The session model contains the express-session configuration and setup. The user
 
 *Any database that integrates with express-session and sequalized could be used in this project. Compatible session stores are listed on the [express-session document](https://www.npmjs.com/package/express-session#compatible-session-stores).   Compatible sequalized databases are listed on the [sequalized dialects page](https://sequelize.org/v5/manual/dialects.html). For alternative passport polices browse the [passport policy packages](http://www.passportjs.org/packages/).*
 
-## Set Up the Application
-
 In app.js the new models and packages are used by the app.
 
 ```
