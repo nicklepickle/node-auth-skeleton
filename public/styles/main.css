@@ -1,0 +1,44 @@
+body {
+  padding: 0px;
+  margin: 0px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+header {
+  padding:12px;
+  background-color:#000000;
+  display:flex;
+}
+
+h1 {
+  width:100%;
+  margin:0px;
+}
+
+h1 a {
+  text-decoration:none;
+}
+
+#user-header {
+  width:100%;
+  margin-top:12px;
+  text-align:right;
+}
+
+#main {
+  padding:12px;
+}
+
+.errors {
+  margin-top:12px;
+  color:#AA0000;
+}
+
+.confirm {
+  margin-top:12px;
+  color:#00AA00;
+}

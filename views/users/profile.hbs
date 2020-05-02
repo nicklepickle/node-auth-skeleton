@@ -1,0 +1,20 @@
+<h2>Profile</h2>
+<form method="post" action="/users/profile">
+  <label for="nameFirst">First Name</label><br />
+  <input type="text" name="nameFirst" id="nameFirst" value="{{profile.nameFirst}}" /><br />
+
+  <label for="nameLast">Last Name</label><br />
+  <input type="text" name="nameLast" id="nameLast" value="{{profile.nameLast}}" /><br />
+
+  <label for="email">Email</label><br />
+  <input type="text" name="email" id="email" value="{{profile.email}}" /><br />
+
+  <label for="avatarPath">Avatar</label><br />
+  <input type="text" name="avatarPath" id="avatarPath" value="{{profile.avatarPath}}" /><br />
+
+  <label for="bio">About</label><br />
+  <textarea name="bio" id="bio" rows="8" cols="80">{{profile.bio}}</textarea><br />
+
+  <input type="submit" value="Update Profile" />
+  <input type="button" value="Reset Password" onclick="location='/users/password'" />
+</form>
