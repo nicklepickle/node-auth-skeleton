@@ -16,7 +16,9 @@ router.get('/', function(req, res, next) {
 module.exports = router;
 ```
 
-This is the starting point for this project which extends an express generator skeleton to provide authentication with help from the passport and bcrypt packages.  Authentication is a complex process that unfortunately neither node, express nor express generator offers much help with.  It can be easy to make small mistakes that can have big consequences in a production application.  This project attempts to provide a starting point for applications requiring authentication by providing a basic implementation with sane defaults which can be modified to suit a developer's needs.  It is only opinionated in its choice of view and database engines, Handlebars and Postgres respectively. This document will cover other compatible options.
+This is the starting point for this project which extends an express generator skeleton to provide authentication with help from the passport and bcrypt packages.  Authentication is a complex process that unfortunately neither node, express nor express generator offers much help with.  It can be easy to make small mistakes that can have big consequences in a production application.  This project attempts to provide a starting point for applications requiring authentication by providing a basic implementation with sane defaults which can be modified to suit a developer's needs.  It is only opinionated in its choice of view and database engines, Handlebars and Postgres respectively. 
+
+*This document will cover other compatible options.*
 
 ## Creating the Skeleton
 
