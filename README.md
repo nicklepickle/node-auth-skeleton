@@ -83,7 +83,7 @@ $nick npm audit
 The configuration for this application will be stored in the config.js file at the root of the project. This file contains all of the vital security settings for the application along with database credentials. It should be treated carefully and never checked into a public repository. With git this can be done by updating its index.
 
 ```
-nick$ git update-index --assume-unchanged config.js
+$nick git update-index --assume-unchanged config.js
 ```
 
 The database section of config.js contains connection settings described in the [sequalized manual](https://sequelize.org/v5/manual/getting-started.html).  The session section contains key which is the name of the session cookie, secret used to salt the payload and secure which should always be set to true in a production environment. The password section contains the following important settings.
