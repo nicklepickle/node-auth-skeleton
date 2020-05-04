@@ -84,26 +84,26 @@ The configuration for this application will be stored in the config.js file at t
 $nick git update-index --assume-unchanged config.js
 ```
 
-The database section of config.js contains connection settings described in the [sequalized manual](https://sequelize.org/v5/manual/getting-started.html).  The session section contains key which is the name of the session cookie, secret used to salt the payload and secure which should always be set to true in a production environment. The password section contains the following important settings.
+The **database** section of config.js contains connection settings described in the [sequalized manual](https://sequelize.org/v5/manual/getting-started.html).  The **session** section contains **key** which is the name of the session cookie, **secret** used to salt the payload and **secure** which should always be set to true in a production environment. The **password** section contains the following important settings.
 
 ```
 saltrounds: 10
 ```
 
-The saltrounds setting is the amount of time required to calculate the hash. The higher the cost factor, the more hashing rounds are done.  A cost factor of 10 means that the calculation is done 2^10 times. The more rounds of calculation you need to get the final hash, the more calculation time is necessary. This is no problem for calculating a single hash for a login, but it is a huge problem when you brute-force millions of password combinations.
+The **saltrounds** setting is the amount of time required to calculate the hash. The higher the cost factor, the more hashing rounds are done.  A cost factor of 10 means that the calculation is done 2^10 times. The more rounds of calculation you need to get the final hash, the more calculation time is necessary. This is no problem for calculating a single hash for a login, but it is a huge problem when you brute-force millions of password combinations.
 
 ```
 maxattempts: 10
 ```
 
-The maxattempts setting is the number of failed password attempts a user can try before they are locked out of their account.  With this feature a brute-force attack to gain access to a single account is also a huge problem.  The down side is that some valid users will be locked out of their account and will require a method of resetting their credentials.  This is usually done by sending an expiring, one time use token to them via email or text message that allows them access to their password page.  This however is outside of the scope of an application skeleton.  To turn this feature off set maxattempts to zero.
+The **maxattempts** setting is the number of failed password attempts a user can try before they are locked out of their account.  With this feature a brute-force attack to gain access to a single account is also a huge problem.  The down side is that some valid users will be locked out of their account and will require a method of resetting their credentials.  This is usually done by sending an expiring, one time use token to them via email or text message that allows them access to their password page.  This however is outside of the scope of an application skeleton.  To turn this feature off set **maxattempts** to zero.
 
 ```
 minlength: 6,
 complexity: 1
 ```
 
-Minlength and complexity set the requirements for a valid password. Minlength as expected sets the minimum length of a valid password. Complexity sets the character requirements. With a value of 1 passwords require letters and numbers. With a value of 2 passwords require letters, numbers and non-alphanumeric characters.  With a value of 3 passwords require upper and lower case letters, numbers and non-alphanumeric characters. To turn this feature off set complexity to zero.
+The **minlength** and **complexity** settings define the requirements for a valid password. The **minlength** setting as expected sets the minimum length of a valid password. The **complexity** setting defines the character requirements. With a value of 1 passwords require letters and numbers. With a value of 2 passwords require letters, numbers and non-alphanumeric characters.  With a value of 3 passwords require upper and lower case letters, numbers and non-alphanumeric characters. To turn this feature off set **complexity** to zero.
 
 ## Adding the User and Session Models
 
