@@ -84,7 +84,7 @@ The configuration for this application will be stored in the config.js file at t
 $nick git update-index --assume-unchanged config.js
 ```
 
-The **database** section of config.js contains connection settings described in the [sequalized manual](https://sequelize.org/v5/manual/getting-started.html).  The **session** section contains **key** which is the name of the session cookie, **secret** used to salt the payload and **secure** which should always be set to true in a production environment. The **password** section contains the following important settings.
+The **database** section of config.js contains connection settings described in the [sequalized manual](https://sequelize.org/v5/manual/getting-started.html).  The **session** section contains **key** which is the name of the session cookie, **secret** used to salt the payload and **secure** which determines if the session cookie should be encrypted. Session cookies should always be set to secure in a production environment. The **password** section contains the following important settings.
 
 ```
 saltrounds: 10
