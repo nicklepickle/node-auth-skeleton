@@ -4,6 +4,7 @@ const passport = require('passport');
 const config = require("../config");
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const Models = require('../models');
 
 // GET /users/create
@@ -106,7 +107,14 @@ router.get('/profile', function(req, res, next) {
 
 // POST /users/profile
 router.post('/profile', function(req, res, next) {
-  if (req.user) {
+  if (!req.user) {
+    return res.redirect('/users/login');
+  }
+  else if (req.body.token != req.user.token) {
+    console.log('POST contained ' + req.body.token + ' not ' + req.user.token );
+    return res.redirect('/users/profile?status=403'); // CSRF
+  }
+  else {
     Models.users.findOne({where: {email:req.body.email}})
       .then(conflict=> {
         if (conflict && conflict.userId != req.user.id) {
@@ -128,7 +136,11 @@ router.post('/profile', function(req, res, next) {
             .then(num => {
               //update session user.name
               let name = (req.body.nameFirst + ' ' + req.body.nameLast).trim();
-              req.login({id:req.user.id,name:name}, function(err){
+              req.login({
+                id:req.user.id,
+                name:name,
+                token:crypto.randomBytes(16).toString("hex")},
+              function(err){
                 if(err) {
                   return next(err);
                 }
@@ -150,9 +162,7 @@ router.post('/profile', function(req, res, next) {
           }
       });
   }
-  else {
-    return res.redirect('/users/login');
-  }
+
 });
 
 
@@ -172,7 +182,7 @@ router.get('/password', function(req, res, next) {
   if (req.user) {
     res.render('users/password', {
       user: req.user,
-      title: 'Create User',
+      title: 'Reset Password',
       scripts: ['/scripts/users/password.js']
     });
   }
@@ -183,25 +193,27 @@ router.get('/password', function(req, res, next) {
 
 // POST /users/password
 router.post('/password', function(req, res, next) {
-  if (req.user) {
-    if (req.body.password != req.body.confirm || !Models.users.validatePassword(req.body.password)) {
-      return res.redirect('/users/password?status=422');
-    }
-    else {
-      bcrypt.hash(req.body.password, config.password.saltrounds, function(err, hash) {
-        Models.users.update({password:hash}, {where: {userId:req.user.id}})
-          .then(num => {
-            return res.redirect('/users/profile?status=200');
-          })
-          .catch(err => {
-            console.log(err);
-            return res.redirect('/users/password?status=422');
-          });
-      });
-    }
+  if (!req.user) {
+    return res.redirect('/users/login');
+  }
+  else if (req.body.password != req.body.confirm || !Models.users.validatePassword(req.body.password)) {
+    return res.redirect('/users/password?status=422');
+  }
+  else if (req.body.token != req.user.token) {
+    console.log('POST contained ' + req.body.token + ' not ' + req.user.token );
+    return res.redirect('/users/password?status=403'); // CSRF
   }
   else {
-    return res.redirect('/users/login');
+    bcrypt.hash(req.body.password, config.password.saltrounds, function(err, hash) {
+      Models.users.update({password:hash}, {where: {userId:req.user.id}})
+        .then(num => {
+          return res.redirect('/users/profile?status=200');
+        })
+        .catch(err => {
+          console.log(err);
+          return res.redirect('/users/password?status=422');
+        });
+    });
   }
 });
 
@@ -211,9 +223,10 @@ router.get('/logout', function(req, res, next) {
   if (req.user) {
     console.log('user ' + req.user.id + ' is logging out');
     req.logout();
-    req.session.destroy();
+    req.session.destroy(function (err) {
+      return res.redirect('/');
+    });
   }
-  return res.redirect('/');
 });
 
 module.exports = router;

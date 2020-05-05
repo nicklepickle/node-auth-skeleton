@@ -1,5 +1,7 @@
 <h2>Profile</h2>
 <form method="post" action="/users/profile">
+  <input type="hidden" name="token" value="{{user.token}}" />
+
   <label for="nameFirst">First Name</label><br />
   <input type="text" name="nameFirst" id="nameFirst" value="{{profile.nameFirst}}" /><br />
 

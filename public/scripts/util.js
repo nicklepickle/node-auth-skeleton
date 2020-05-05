@@ -52,6 +52,9 @@ var util = {
       case 409:
       util.addError('This email belongs to another user.');
       break;
+      case 403:
+      util.addError('Forbidden.');
+      break;
       case 401:
       util.addError('Login failed.');
       break;

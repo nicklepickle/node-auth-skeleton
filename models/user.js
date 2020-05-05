@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const config = require('../config');
@@ -118,7 +119,11 @@ module.exports = (sequelize, Sequelize) => {
               }).then(count => {
                 console.log('user ' + user.userId + ' authenticated');
                 let name = (user.nameFirst + ' ' + user.nameLast).trim();
-                return done(null, {id:user.userId,name:name});
+                return done(null, {
+                  id:user.userId,
+                  name:name,
+                  token:crypto.randomBytes(16).toString("hex")
+                });
               });
             }
             else {
