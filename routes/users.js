@@ -43,7 +43,11 @@ router.post('/create', function(req, res, next) {
               console.log('User created');
               console.log(createdUser);
 
-              req.login({id:createdUser.userId,name:name}, function(err){
+              req.login({
+                id:createdUser.userId,
+                name:name,
+                token:crypto.randomBytes(16).toString("hex")
+              }, function(err){
                 if(err) {
                   return next(err);
                 }
