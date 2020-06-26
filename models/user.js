@@ -116,7 +116,8 @@ module.exports = (sequelize, Sequelize) => {
                 lastLogin: sequelize.literal('CURRENT_TIMESTAMP')
               },{
                 where:{userId: user.userId}
-              }).then(count => {
+              })
+              .then(count => {
                 console.log('user ' + user.userId + ' authenticated');
                 let name = (user.nameFirst + ' ' + user.nameLast).trim();
                 return done(null, {
@@ -124,6 +125,9 @@ module.exports = (sequelize, Sequelize) => {
                   name:name,
                   token:crypto.randomBytes(16).toString("hex")
                 });
+              })
+              .catch(err => {
+                return done(err);
               });
             }
             else {
@@ -132,8 +136,12 @@ module.exports = (sequelize, Sequelize) => {
                 loginAttempts: (user.loginAttempts + 1)
               },{
                 where:{userId: user.userId}
-              }).then(count => {
+              })
+              .then(count => {
                   return done(null, false, { message: 'Login failed.' });
+              })
+              .catch(err => {
+                return done(err);
               });
             }
           });
